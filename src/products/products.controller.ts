@@ -23,13 +23,17 @@ export class ProductsController {
   // and return the result of productsService.create(dto).
   // The service is already implemented. Do not add repository or business logic.
 
+  @Post()
+  create(@Body(requestValidationPipe)dto: CreateProductDto) {
+    return this.productsService.create(dto);
+  }
+
   @Get()
   findFiltered(
     // TODO 3: Apply requestValidationPipe to the complete query DTO.
-    @Query() query: FilterProductsQueryDto,
-  ) {
-    return this.productsService.findFiltered(query);
-  }
+    @Query(requestValidationPipe) query: FilterProductsQueryDto) {
+  return this.productsService.findFiltered(query);
+}
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
@@ -40,9 +44,9 @@ export class ProductsController {
   @Patch(':id')
   update(
     // TODO 2: Use ParseIntPipe here and remove the manual Number conversion.
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     // TODO 2: Apply requestValidationPipe to this body.
-    @Body() dto: UpdateProductDto,
+    @Body(requestValidationPipe) dto: UpdateProductDto,
   ) {
     return this.productsService.update(Number(id), dto);
   }
